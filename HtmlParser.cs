@@ -31,7 +31,8 @@ namespace AstroSpider
             {
                 HtmlNode node = m_htmlDoc.DocumentNode.SelectSingleNode(xpath);
                 if (node != null) { 
-                    str = node.OuterHtml;
+                    // str = node.OuterHtml;
+                    str = node.InnerText;
                     str = str.Trim();
                 }
                 else
@@ -41,6 +42,30 @@ namespace AstroSpider
             }
 
             return str;
+        }
+
+        private string removeScript(string strHtml)
+        {
+            const string script_start = "<script";
+            const string script_end = "</script>";
+
+            int start = 0;
+            int end = 0;
+
+            do{
+                start = strHtml.IndexOf(script_start);
+                if (start > 0)
+                {
+                    end = strHtml.IndexOf(script_end, start);
+
+                    if (end > start)
+                    {
+                        strHtml = strHtml.Remove(start, end - start + script_end.Length);
+                    }
+                }
+            }while(start > 0 && end  > start);
+
+            return strHtml;
         }
     }
 

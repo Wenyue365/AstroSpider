@@ -74,7 +74,7 @@ namespace AstroSpider
         const int m_endPage = 365;
 
         WebClient m_wclient = new WebClient();
-        String m_url = "http://astro.sina.com.cn/jian/hdrl/{0:D4}-{1:D2}-{2:D2}.shtml";
+        String m_url = "http://laohuangli.net/{0}/{0}-{1}-{2}.html";
 
         String m_strHtml;
 
@@ -134,14 +134,8 @@ namespace AstroSpider
 
             if (m_strHtml != null && m_strHtml != "")
             {
-                ZHtmlParser pr = new ZHtmlParser(m_strHtml);
-                Entry entry = new Entry(pr);
-                entry.xpath = "//*[@id=\"con01-0\"]/div[2]/div[2]/p/text()";
 
-                string[] values = entry.val.Split(' ');
-                string fex = values[0];
-
-                filename = string.Format("{0}\\{1}.{2}.{3}", _LAOHUANGDAOBOOK_DIR_, _OUTFILE_PREFIX_, fex, "html");
+                filename = string.Format("{0}\\{1}.{2}.{3}", _LAOHUANGDAOBOOK_DIR_, _OUTFILE_PREFIX_, pageIdx, "html");
             }
             else
             {
@@ -151,14 +145,27 @@ namespace AstroSpider
             return filename;
         }
 
-
         class LaoHLEntryEx : Entry
         {
+            // Definition of Extra customized parser
+            public delegate string CustomParser(string strOldValue);
+
             char[] m_sepCharset = { ' ', '、' };
             string m_entryName = null;
             int m_idxOfVal = -1;
             string m_value = null;
             string[] m_values = null;
+
+
+            // Declare a customized parser
+            public CustomParser m_customParser = null;
+
+            /// <summary>
+            /// LaoHLEntryEx constructor
+            /// </summary>
+            /// <param name="en">Name of the Entry</param>
+            /// <param name="xpath">XPATH for parsing value of this entry</param>
+            /// <param name="iVal">Specified exact value of the entry within multiple values</param>
             public LaoHLEntryEx(string en, string xpath, int iVal = -1)
             {
                 m_entryName = en;
@@ -175,6 +182,13 @@ namespace AstroSpider
             override protected string parseValue()
             {
                 base.val = base.parseValue(); // 使用基类的函数提取 val 值
+
+                // Extra customized parsing
+                if (m_customParser != null)
+                {
+                    base.val = m_customParser(base.val);
+                }
+
                 if (m_idxOfVal >= 0)
                 {
                     if (base.val != null)         // 提取给定序号的子值，并保存于 m_value
@@ -196,57 +210,81 @@ namespace AstroSpider
 
         class LaoHLDayEx
         {
-            public LaoHLEntryEx m_date;          // 日期 
-            public LaoHLEntryEx m_solarDate;     // 公历
-            public LaoHLEntryEx m_lunarDate;     // 农历
-            public LaoHLEntryEx m_yearOrder;     // 岁次
-            public LaoHLEntryEx m_zodiac;        // 生肖
-            public LaoHLEntryEx m_monthOrder;    // 月次
-            public LaoHLEntryEx m_dayOrder;      // 日次
-            public LaoHLEntryEx m_birthGod;      // 日胎神占方
-            public LaoHLEntryEx m_fiveElem;      // 五行
-            public LaoHLEntryEx m_collide;       // 冲
-            public LaoHLEntryEx m_pengAvoid;     // 彭祖百忌
-            public LaoHLEntryEx m_goodAngelYi;   // 吉神宜趋
-            public LaoHLEntryEx m_evilAngelJi;   // 凶神宜忌
-            public LaoHLEntryEx m_Yi;            // 宜
-            public LaoHLEntryEx m_Ji;            // 忌
+            public LaoHLEntryEx[] m_ancient_hour = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_ancient_hour_fullname = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_solar_time_start = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_solar_time_end = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_star_god = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_straight_confict = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_good_ill_luck = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_zodiac_timed = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_good_god = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_ill_god = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_well_timed = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_bad_timed = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_fiveElem_timed = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_conflict_orientation = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_happy_god = new LaoHLEntryEx[12];
+            public LaoHLEntryEx[] m_fortune_god = new LaoHLEntryEx[12];
+
 
             public LaoHLDayEx(ZHtmlParser pr)
             {
-                m_date = new LaoHLEntryEx("公历", "//*[@id=\"con01-0\"]/div[2]/div[2]/p/text()", 0);
-                m_solarDate = new LaoHLEntryEx("公历", "//*[@id=\"con01-0\"]/div[2]/div[2]/p/text()", 0);
-                m_lunarDate = new LaoHLEntryEx("农历", "//*[@id=\"con01-0\"]/div[2]/div[2]/p/text()", 1);
-                m_yearOrder = new LaoHLEntryEx("岁次", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[1]/td[2]/text()", 0); // 注意：xpath 里的 tbody 须忽略！！！
-                m_zodiac = new LaoHLEntryEx("岁次", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[1]/td[2]/text()", 1);
-                m_monthOrder = new LaoHLEntryEx("岁次", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[1]/td[2]/text()", 2);
-                m_dayOrder = new LaoHLEntryEx("岁次", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[1]/td[2]/text()", 3);
-                m_birthGod = new LaoHLEntryEx("日胎神占方", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[2]/td[2]/text()");
-                m_fiveElem = new LaoHLEntryEx("五行", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[3]/td[2]/text()");
-                m_collide = new LaoHLEntryEx("冲", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[4]/td[2]/text()");
-                m_pengAvoid = new LaoHLEntryEx("彭祖百忌", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[5]/td[2]/text()");
-                m_goodAngelYi = new LaoHLEntryEx("吉神宜趋", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[6]/td[2]/text()");
-                m_evilAngelJi = new LaoHLEntryEx("凶神宜忌", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[8]/td[2]/text()");
-                m_Yi = new LaoHLEntryEx("宜", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[7]/td[2]/text()");
-                m_Ji = new LaoHLEntryEx("忌", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[9]/td[2]/text()");
 
-                // 为Entry 实例的 Parser 对象赋值，将会同时完成相应数值的解析
-                m_date.Parser = pr;
-                m_solarDate.Parser = pr;
-                m_lunarDate.Parser = pr;
-                m_yearOrder.Parser = pr;
-                m_zodiac.Parser = pr;
-                m_monthOrder.Parser = pr;
-                m_dayOrder.Parser = pr;
-                m_birthGod.Parser = pr;
-                m_fiveElem.Parser = pr;
-                m_collide.Parser = pr;
-                m_pengAvoid.Parser = pr;
-                m_goodAngelYi.Parser = pr;
-                m_evilAngelJi.Parser = pr;
-                m_Yi.Parser = pr;
-                m_Ji.Parser = pr;
+               // EXAMPlE: m_yearOrder = new LaoHLEntryEx("岁次", "//*[@id=\"con01-0\"]/div[2]/div[2]/table/tr[1]/td[2]/text()", 0); // 注意：xpath 里的 tbody 须忽略！！！
 
+                for (int i = 0; i < 12; i++)
+                {
+                    m_ancient_hour[i] = new LaoHLEntryEx("时辰简称", string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[1]/td[{0}]/text()", i+2));
+                    m_solar_time_start[i] = new LaoHLEntryEx("时刻开始",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[2]/td[{0}]/text()",i+2), 0);
+                    m_solar_time_end[i] = new LaoHLEntryEx("时刻结束",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[2]/td[{0}]/text()",i+2), 1);
+                    m_ancient_hour_fullname[i] = new LaoHLEntryEx("时辰全称",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[3]/td[{0}]/text()", i+2));
+                    m_star_god[i] = new LaoHLEntryEx("星神",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[4]/td[{0}]/text()", i+2));
+                    m_straight_confict[i] = new LaoHLEntryEx("正冲",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[5]/td[{0}]/text()",i+2));
+                    m_good_ill_luck[i] = new LaoHLEntryEx("吉凶",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[6]/td[{0}]",i+2));
+                    m_zodiac_timed[i] = new LaoHLEntryEx("生肖",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[7]/td[{0}]/text()",i+2));
+                    m_good_god[i] = new LaoHLEntryEx("吉神",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[8]/td[{0}]/div",i+2));
+                    m_ill_god[i] = new LaoHLEntryEx("凶煞",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[9]/td[{0}]/div",i+2));
+                    m_well_timed[i] = new LaoHLEntryEx("时宜",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[10]/td[{0}]/div",i+2));
+                    m_bad_timed[i] = new LaoHLEntryEx("时忌",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[11]/td[{0}]/div",i+2));
+                    m_fiveElem_timed[i] = new LaoHLEntryEx("五行",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[12]/td[{0}]/text()",i+2));
+                    m_conflict_orientation[i] = new LaoHLEntryEx("煞方",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[13]/td[{0}]/text()",i+2));
+                    m_happy_god[i] = new LaoHLEntryEx("喜神",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[14]/td[{0}]/text()[1]",i+2), 0);
+                    m_fortune_god[i] = new LaoHLEntryEx("财神",  string.Format("//*[@id=\"USkin_bk\"]/table[14]/tr/td/div/table[1]/tr[14]/td[{0}]/text()[2]",i+2), 1);
+
+                    // 额外处理
+                    m_good_ill_luck[i].m_customParser = getGoodIllLuckValue;
+
+                    // 为Entry 实例的 Parser 对象赋值，将会同时完成相应数值的解析
+                    m_ancient_hour[i].Parser = pr;
+                    m_solar_time_start[i].Parser = pr;
+                    m_solar_time_end[i].Parser = pr;
+                    m_star_god[i].Parser = pr;
+                    m_straight_confict[i].Parser = pr;
+                    m_good_ill_luck[i].Parser = pr;
+                    m_zodiac_timed[i].Parser = pr;
+                    m_good_god[i].Parser = pr;
+                    m_ill_god[i].Parser = pr;
+                    m_well_timed[i].Parser = pr;
+                    m_bad_timed[i].Parser = pr;
+                    m_fiveElem_timed[i].Parser = pr;
+                    m_conflict_orientation[i].Parser = pr;
+                    m_happy_god[i].Parser = pr;
+                    m_fortune_god[i].Parser = pr;
+                }
+
+            }
+
+            private string getGoodIllLuckValue(string strOldValue)
+            {
+                string strVal = "吉";
+
+                if (strOldValue.IndexOf("\"凶\"==\"吉\"") > 0)
+                {
+                    strVal = "凶";
+                }
+
+                return strVal;
             }
         }
         
@@ -254,7 +292,7 @@ namespace AstroSpider
         {
             int nResult = 0;
 
-            HdDBHelper db = new HdDBHelper();
+            /*HdDBHelper db = new HdDBHelper();*/
 
             string[] filenames = Directory.GetFiles(dirpath);
             foreach (string fn in filenames)
@@ -269,7 +307,7 @@ namespace AstroSpider
 
                     /******
                     db.saveToDb(hlday);
-                    *********/
+                    ********/
 
                     tr.Close();
                 }

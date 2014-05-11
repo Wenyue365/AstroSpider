@@ -41,8 +41,11 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -58,7 +61,7 @@
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(154, 31);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(119, 24);
             this.button2.TabIndex = 1;
@@ -69,7 +72,7 @@
             // txbUrlEncode
             // 
             this.txbUrlEncode.Location = new System.Drawing.Point(31, 11);
-            this.txbUrlEncode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txbUrlEncode.Margin = new System.Windows.Forms.Padding(2);
             this.txbUrlEncode.Multiline = true;
             this.txbUrlEncode.Name = "txbUrlEncode";
             this.txbUrlEncode.Size = new System.Drawing.Size(116, 151);
@@ -79,7 +82,7 @@
             // txbUrlDecode
             // 
             this.txbUrlDecode.Location = new System.Drawing.Point(151, 11);
-            this.txbUrlDecode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txbUrlDecode.Margin = new System.Windows.Forms.Padding(2);
             this.txbUrlDecode.Multiline = true;
             this.txbUrlDecode.Name = "txbUrlDecode";
             this.txbUrlDecode.Size = new System.Drawing.Size(126, 151);
@@ -89,7 +92,7 @@
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(31, 166);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(246, 27);
             this.button3.TabIndex = 4;
@@ -100,7 +103,7 @@
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(22, 69);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(119, 24);
             this.button4.TabIndex = 5;
@@ -111,7 +114,7 @@
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(31, 267);
-            this.button5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button5.Margin = new System.Windows.Forms.Padding(2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(141, 18);
             this.button5.TabIndex = 6;
@@ -122,7 +125,7 @@
             // txbJSON
             // 
             this.txbJSON.Location = new System.Drawing.Point(31, 202);
-            this.txbJSON.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txbJSON.Margin = new System.Windows.Forms.Padding(2);
             this.txbJSON.Multiline = true;
             this.txbJSON.Name = "txbJSON";
             this.txbJSON.Size = new System.Drawing.Size(220, 62);
@@ -131,7 +134,7 @@
             // button6
             // 
             this.button6.Location = new System.Drawing.Point(31, 290);
-            this.button6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button6.Margin = new System.Windows.Forms.Padding(2);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(141, 18);
             this.button6.TabIndex = 8;
@@ -142,7 +145,7 @@
             // button7
             // 
             this.button7.Location = new System.Drawing.Point(154, 69);
-            this.button7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button7.Margin = new System.Windows.Forms.Padding(2);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(119, 24);
             this.button7.TabIndex = 9;
@@ -157,9 +160,9 @@
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Location = new System.Drawing.Point(288, 10);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(294, 121);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
@@ -168,10 +171,10 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.button8);
-            this.groupBox2.Location = new System.Drawing.Point(288, 156);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Location = new System.Drawing.Point(288, 144);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(294, 130);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
@@ -180,7 +183,7 @@
             // button8
             // 
             this.button8.Location = new System.Drawing.Point(22, 34);
-            this.button8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button8.Margin = new System.Windows.Forms.Padding(2);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(119, 24);
             this.button8.TabIndex = 0;
@@ -188,11 +191,32 @@
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(22, 20);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.TabIndex = 12;
+            this.button9.Text = "GetData";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.button9);
+            this.groupBox3.Location = new System.Drawing.Point(288, 290);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(294, 140);
+            this.groupBox3.TabIndex = 13;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "LaoHuangli";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(604, 442);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button6);
@@ -205,6 +229,7 @@
             this.Text = "AstroSpider";
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -225,6 +250,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
 

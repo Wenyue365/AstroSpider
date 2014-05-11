@@ -87,5 +87,11 @@ namespace AstroSpider
             TXHuangDaoBook hdb = new TXHuangDaoBook();
             hdb.Go();
         }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            LaoHuangDaoBook lhlb = new LaoHuangDaoBook();
+            lhlb.Go();
+        }
     }
 }
