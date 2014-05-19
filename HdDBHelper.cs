@@ -281,5 +281,46 @@ namespace HuangDao
 
             return hld;
         }
+
+        public int saveToDb(LaoHLDayEx lhlday)
+        {
+            int nSaved = 0;
+
+            for (int i = 0; i < lhlday.Length; i++)
+            {
+                string cmdText = string.Format("INSERT INTO wy_laohuangli " +
+                    "(ancient_hour, ancient_hour_fullname, solar_time_start, solar_time_end, " +
+                    "star_god, straight_confict, good_ill_luck, zodiac_timed, good_god, ill_god, " +
+                    "well_timed, bad_timed, fiveElem_timed, conflict_orientation, happy_god, fortune_god) " +
+                    "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', " +
+                    "'{10}', '{11}', '{12}', '{13}', '{14}', '{15}')",
+                    lhlday.m_ancient_hour[i].Value,
+                    lhlday.m_ancient_hour_fullname[i].Value,
+                    lhlday.m_solar_time_start[i].Value,
+                    lhlday.m_solar_time_end[i].Value,
+                    lhlday.m_star_god[i].Value,
+                    lhlday.m_straight_confict[i].Value,
+                    lhlday.m_good_ill_luck[i].Value,
+                    lhlday.m_zodiac_timed[i].Value,
+                    lhlday.m_good_god[i].Value,
+                    lhlday.m_ill_god[i].Value,
+                    lhlday.m_well_timed[i].Value,
+                    lhlday.m_bad_timed[i].Value,
+                    lhlday.m_fiveElem_timed[i].Value,
+                    lhlday.m_conflict_orientation[i].Value,
+                    lhlday.m_happy_god[i].Value,
+                    lhlday.m_fortune_god[i].Value);
+
+                MySqlCommand cmdSql = new MySqlCommand(cmdText, m_connSql);
+                cmdSql.CommandType = CommandType.Text;
+
+                if (cmdSql.ExecuteNonQuery() == 1)
+                {
+                    nSaved++;
+                }
+            }
+          
+            return nSaved;
+        }
     }
 }
